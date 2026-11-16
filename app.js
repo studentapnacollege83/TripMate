@@ -54,11 +54,11 @@ app.use(
     saveUninitialized: false,
     store: store,
     cookie: {
-      httpOnly: true,
-      secure: false,
-      sameSite: "lax",
-      maxAge: 1000 * 60 * 60 * 24
-    }
+  httpOnly: true,
+  secure: process.env.NODE_ENV === "production",
+  sameSite: "lax",
+  maxAge: 1000 * 60 * 60 * 24
+}
   })
 );
 
@@ -84,4 +84,3 @@ app.listen(PORT, () => {
 }).on("error", (error) => {
   console.error("❌ Server startup error:", error);
 });})
-//save nhi ho rhii intinary and expenses , regenrate main tripmat page 
