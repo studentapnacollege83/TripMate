@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Edit Trip — TripMate</title>
+
+  <link rel="stylesheet" href="/output.css">
+</head>
+
+<body class="min-h-screen bg-slate-950 text-white">
+
+  <%- include("../partials/navbar") %>
+
+  <main class="mx-auto max-w-3xl px-6 py-16">
+
+    <div class="mb-8">
+      <h1 class="text-3xl font-bold">
+        Edit Trip
+      </h1>
+
+      <p class="mt-2 text-slate-400">
+        Update your trip details.
+      </p>
+    </div>
+
+    <form
+      action="/trips/<%= trip._id %>/edit"
+      method="POST"
+      class="rounded-2xl border border-white/10 bg-white/5 p-7"
+    >
+
+      <div class="grid gap-5 md:grid-cols-2">
+
+        <div class="md:col-span-2">
+          <label class="mb-2 block text-sm font-medium text-slate-300">
+            Trip Title
+          </label>
+
+          <input
+            type="text"
+            name="title"
+            value="<%= trip.title %>"
+            required
+            maxlength="100"
+            class="w-full rounded-xl border border-white/10 bg-white/5 px-4 py-3 text-white outline-none focus:border-indigo-400"
+          >
+        </div>
+
+        <div class="md:col-span-2">
+          <label class="mb-2 block text-sm font-medium text-slate-300">
+            Destination
+          </label>
+
+          <input
+            type="text"
+            name="destination"
+            value="<%= trip.destination %>"
+            required
+            maxlength="100"
+            class="w-full rounded-xl border border-white/10 bg-white/5 px-4 py-3 text-white outline-none focus:border-indigo-400"
+          >
+        </div>
+
+        <div>
+          <label class="mb-2 block text-sm font-medium text-slate-300">
+            Start Date
+          </label>
+
+          <input
+            type="date"
+            name="startDate"
+            value="<%= trip.startDate.toISOString().split('T')[0] %>"
+            required
+            class="w-full rounded-xl border border-white/10 bg-white/5 px-4 py-3 text-white outline-none focus:border-indigo-400"
+          >
+        </div>
+
+        <div>
+          <label class="mb-2 block text-sm font-medium text-slate-300">
+            End Date
+          </label>
+
+          <input
+            type="date"
+            name="endDate"
+            value="<%= trip.endDate.toISOString().split('T')[0] %>"
+            required
+            class="w-full rounded-xl border border-white/10 bg-white/5 px-4 py-3 text-white outline-none focus:border-indigo-400"
+          >
+        </div>
+
+        <div>
+          <label class="mb-2 block text-sm font-medium text-slate-300">
+            Budget
+          </label>
+
+          <input
+            type="number"
+            name="budget"
+            min="0"
+            value="<%= trip.budget %>"
+            class="w-full rounded-xl border border-white/10 bg-white/5 px-4 py-3 text-white outline-none focus:border-indigo-400"
+          >
+        </div>
+
+        <div class="md:col-span-2">
+          <label class="mb-2 block text-sm font-medium text-slate-300">
+            Notes
+          </label>
+
+          <textarea
+            name="notes"
+            rows="4"
+            maxlength="1000"
+            class="w-full resize-none rounded-xl border border-white/10 bg-white/5 px-4 py-3 text-white outline-none focus:border-indigo-400"
+          ><%= trip.notes || "" %></textarea>
+        </div>
+
+      </div>
+
+      <div class="mt-7 flex gap-3">
+
+        <a
+          href="/trips/<%= trip._id %>"
+          class="rounded-xl border border-white/10 px-5 py-3 text-sm font-medium text-slate-300 hover:bg-white/10"
+        >
+          Cancel
+        </a>
+
+        <button
+          type="submit"
+          class="rounded-xl bg-indigo-500 px-6 py-3 text-sm font-semibold hover:bg-indigo-400"
+        >
+          Save Changes
+        </button>
+
+      </div>
+
+    </form>
+
+  </main>
+
+  <%- include("../partials/footer") %>
+
+</body>
+</html>

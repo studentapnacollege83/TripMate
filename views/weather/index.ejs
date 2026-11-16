@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>TripMate — Weather</title>
+
+  <link rel="stylesheet" href="/output.css">
+</head>
+
+<body class="min-h-screen bg-slate-950 text-white">
+
+  <%- include("../partials/navbar") %>
+
+  <main class="mx-auto max-w-7xl px-6 py-16">
+
+    <div class="mx-auto max-w-3xl text-center">
+
+      <p class="text-sm font-medium uppercase tracking-widest text-indigo-400">
+        TripMate Weather
+      </p>
+
+      <h1 class="mt-4 text-4xl font-bold sm:text-5xl">
+        Check destination weather
+      </h1>
+
+      <p class="mt-4 text-slate-400">
+        Get current weather information for any destination.
+      </p>
+
+      <form
+        action="/weather"
+        method="GET"
+        class="mt-8 flex flex-col gap-3 sm:flex-row"
+      >
+
+        <input
+          type="text"
+          name="city"
+          value="<%= typeof weather !== 'undefined' && weather ? weather.name : '' %>"
+          placeholder="Enter city name..."
+          required
+          class="flex-1 rounded-xl border border-white/10 bg-white/5 px-5 py-3 text-white outline-none placeholder:text-slate-500 focus:border-indigo-400"
+        >
+
+        <button
+          type="submit"
+          class="rounded-xl bg-indigo-500 px-6 py-3 font-semibold transition hover:bg-indigo-400"
+        >
+          Check Weather
+        </button>
+
+      </form>
+
+    </div>
+
+
+    <% if (error) { %>
+
+      <div class="mx-auto mt-10 max-w-2xl rounded-2xl border border-red-400/20 bg-red-400/10 p-5 text-center text-red-300">
+        <%= error %>
+      </div>
+
+    <% } %>
+
+
+    <% if (weather) { %>
+
+      <!-- Current Weather -->
+
+      <div class="mx-auto mt-12 max-w-2xl rounded-3xl border border-white/10 bg-white/5 p-8 text-center backdrop-blur-xl">
+
+        <div class="text-5xl">
+          🌤️
+        </div>
+
+        <h2 class="mt-4 text-3xl font-bold">
+          <%= weather.name %>
+        </h2>
+
+        <p class="mt-2 text-slate-400 capitalize">
+          <%= weather.weather[0].description %>
+        </p>
+
+        <div class="mt-8 text-6xl font-bold">
+          <%= Math.round(weather.main.temp) %>°C
+        </div>
+
+        <div class="mt-8 grid grid-cols-2 gap-4 sm:grid-cols-3">
+
+          <div class="rounded-2xl bg-white/5 p-4">
+            <p class="text-sm text-slate-500">
+              Feels Like
+            </p>
+
+            <p class="mt-1 text-lg font-semibold">
+              <%= Math.round(weather.main.feels_like) %>°C
+            </p>
+          </div>
+
+
+          <div class="rounded-2xl bg-white/5 p-4">
+            <p class="text-sm text-slate-500">
+              Humidity
+            </p>
+
+            <p class="mt-1 text-lg font-semibold">
+              <%= weather.main.humidity %>%
+            </p>
+          </div>
+
+
+          <div class="rounded-2xl bg-white/5 p-4">
+            <p class="text-sm text-slate-500">
+              Wind
+            </p>
+
+            <p class="mt-1 text-lg font-semibold">
+              <%= weather.wind.speed %> m/s
+            </p>
+          </div>
+
+        </div>
+
+      </div>
+
+
+      <!-- 5-Day Forecast -->
+
+      <% if (forecast && forecast.list) { %>
+
+        <div class="mx-auto mt-12 max-w-5xl">
+
+          <h2 class="mb-5 text-2xl font-bold">
+            5-Day Forecast
+          </h2>
+
+          <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-5">
+
+            <%
+              const forecastDays = forecast.list
+                .filter((item) => item.dt_txt.includes("12:00:00"))
+                .slice(0, 5);
+            %>
+
+
+            <% forecastDays.forEach((day) => { %>
+
+              <div class="rounded-2xl border border-white/10 bg-white/5 p-5 backdrop-blur-xl">
+
+                <p class="text-sm text-slate-400">
+                  <%= new Date(day.dt * 1000).toLocaleDateString("en-IN", {
+                    weekday: "short",
+                    day: "numeric",
+                    month: "short"
+                  }) %>
+                </p>
+
+
+                <div class="mt-5 text-4xl">
+                  🌤️
+                </div>
+
+
+                <p class="mt-4 text-2xl font-bold">
+                  <%= Math.round(day.main.temp) %>°C
+                </p>
+
+
+                <p class="mt-1 text-sm capitalize text-slate-400">
+                  <%= day.weather[0].description %>
+                </p>
+
+
+                <p class="mt-4 text-sm text-slate-500">
+                  Humidity <%= day.main.humidity %>%
+                </p>
+
+              </div>
+
+            <% }) %>
+
+          </div>
+
+        </div>
+
+      <% } %>
+
+    <% } %>
+
+  </main>
+
+
+  <%- include("../partials/footer") %>
+
+</body>
+</html>
