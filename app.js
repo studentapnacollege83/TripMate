@@ -24,8 +24,8 @@ const DB_PATH = process.env.MONGODB_URI;
 const SESSION_SECRET = process.env.SESSION_SECRET;
 
 if (!DB_PATH || !SESSION_SECRET) {
-  throw new Error("MONGODB_URI and SESSION_SECRET must be set in .env");
-};
+  throw new Error("MONGODB_URI and SESSION_SECRET must be set.");
+}
 // MongoDB Session Store
 const store = new MongoDBStore({
   uri: DB_PATH,
